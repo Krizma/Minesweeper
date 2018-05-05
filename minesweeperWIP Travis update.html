@@ -124,7 +124,7 @@ font-size: "12px";
 
 
 .modal-open{
-    overflow:hidden
+    overflow:hidden;
 }
 .modal{
     position:fixed;
@@ -136,7 +136,7 @@ font-size: "12px";
     display:none;
     overflow:hidden;
     -webkit-overflow-scrolling:touch;
-    outline:0
+    outline:0;
 }
 .modal.fade .modal-dialog{
     -webkit-transition:-webkit-transform .3s ease-out;
@@ -145,22 +145,22 @@ font-size: "12px";
     -webkit-transform:translate(0,-25%);
     -ms-transform:translate(0,-25%);
     -o-transform:translate(0,-25%);
-    transform:translate(0,-25%)
+    transform:translate(0,-25%);
 }
 .modal.in .modal-dialog{
     -webkit-transform:translate(0,0);
     -ms-transform:translate(0,0);
     -o-transform:translate(0,0);
-    transform:translate(0,0)
+    transform:translate(0,0);
 }
 .modal-open .modal{
     overflow-x:hidden;
-    overflow-y:auto
+    overflow-y:auto;
 }
 .modal-dialog{
     position:relative;
     width:auto;
-    margin:10px
+    margin:10px;
 }
 .modal-content{
     position:relative;
@@ -172,7 +172,8 @@ font-size: "12px";
     border-radius:6px;
     outline:0;
     -webkit-box-shadow:0 3px 9px rgba(0,0,0,.5);
-    box-shadow:0 3px 9px rgba(0,0,0,.5)
+    box-shadow:0 3px 9px rgba(0,0,0,.5);
+	font-family: Segoe UI;
 }
 .modal-backdrop{
     position:fixed;
@@ -181,69 +182,69 @@ font-size: "12px";
     bottom:0;
     left:0;
     z-index:1040;
-    background-color:#000
+    background-color:#000;
 }
 .modal-backdrop.fade{
     filter:alpha(opacity=0);
-    opacity:0
+    opacity:0;
 }
 .modal-backdrop.in{
     filter:alpha(opacity=50);
-    opacity:.5
+    opacity:.5;
 }
 .modal-header{
     padding:15px;
-    border-bottom:1px solid #e5e5e5
+    border-bottom:1px solid #e5e5e5;
 }
-.modal-header .close{
+.modal-header .close {
     margin-top:-2px
     cursor: pointer;	
 }
 .modal-title{
     margin:0;
-    line-height:1.42857143
+    line-height:1.42857143;
 }
 .modal-body{
     position:relative;
-    padding:15px
+    padding:15px;
 }
 .modal-footer{
     padding:15px;
     text-align:right;
-    border-top:1px solid #e5e5e5
+    border-top:1px solid #e5e5e5;
 }
 .modal-footer .btn+.btn{
     margin-bottom:0;
-    margin-left:5px
+    margin-left:5px;
 }
 .modal-footer .btn-group .btn+.btn{
-    margin-left:-1px
+    margin-left:-1px;
 }
 .modal-footer .btn-block+.btn-block{
-    margin-left:0
+    margin-left:0;
 }
 .modal-scrollbar-measure{
     position:absolute;
     top:-9999px;
     width:50px;
     height:50px;
-    overflow:scroll
+    overflow:scroll;
 }
 @media (min-width:768px){
     .modal-dialog{
         width:600px;
-        margin:30px auto
+        margin:30px auto;
     }
     .modal-content{
         -webkit-box-shadow:0 5px 15px rgba(0,0,0,.5);
-        box-shadow:0 5px 15px rgba(0,0,0,.5)
+        box-shadow:0 5px 15px rgba(0,0,0,.5);
     }
     .modal-sm{
-        width:300px
+        width:300px;
     }
 }
 
-.close{
+.close {
     float:right;
     font-size:21px;
     font-weight:700;
@@ -251,8 +252,25 @@ font-size: "12px";
     color:#000;
     text-shadow:0 1px 0 #fff;
     filter:alpha(opacity=20);
-    opacity:.2
+    opacity:.2;
     cursor: pointer;	
+}
+
+.btnclose {
+	cursor: pointer;
+}
+
+.btnX {
+	cursor: pointer;
+	float:right;
+	 font-size:21px;
+	 font-weight:700;
+    line-height:1;
+    color:#000;
+    text-shadow:0 1px 0 #fff;
+    filter:alpha(opacity=20);
+    opacity:.2;
+    
 }
 
 
@@ -263,6 +281,7 @@ var difficulty;
 var color;
 var gamesWon;
 var gamesLost;
+//var gamesCompleted = +gamesLost + +gamesWon ; 
 var timesReset;
 var highScores;
 
@@ -302,6 +321,7 @@ if(typeof(Storage) != null) {
     color = 1;
     gamesWon = 0;
     gamesLost = 0;
+	gamesCompleted=0;
     timesReset = 0;
     hightScores = [[999,999,999],[999,999,999],[999,999,999]];
     
@@ -573,8 +593,9 @@ function showMines(winner) {
   highScores[difficulty] = updateHighScore(highScores[difficulty], currentTime);
   gameOn = false;
   winner = winner? gamesWon++ : gamesLost++;
-  console.log(gamesWon);
-  console.log(gamesLost);
+  console.log('Games Won: '+gamesWon);
+  console.log('Games Lost: '+gamesLost);
+JSON.parse(gamesLost + gamesWon);
   localStorage.setItem("gamesWon",gamesWon);
   localStorage.setItem("gamesLost",gamesLost);
   document.getElementById("f0").src = winner?"face/win.png":"face/lose.png";
@@ -768,14 +789,14 @@ var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initK
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-          <a type="button" class="close" data-dismiss="modal">&times;</a>
+          <a type="button" class="btnX" data-dismiss="modal">&times;</a>
           <h4 class="modal-title">Modal Header</h4>
         </div>
         <div class="modal-body">
           <p>Some text in the modal.</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btnclose" data-dismiss="modal">Close</button>
         </div>
       </div>
       
