@@ -418,8 +418,8 @@ function showMines(winner) {
   stopCounting = true;
   gameOn = false;
   winner = winner? gamesWon++ : gamesLost++;
-  console.log(gamesWon);
-  console.log(gamesLost);
+  console.log(gamesWon + " Games Won");
+  console.log(gamesLost + " Games Lost");
   localStorage.setItem("gamesWon",gamesWon);
   localStorage.setItem("gamesLost",gamesLost);
   document.getElementById("f0").src = winner?"face/win.png":"face/lose.png";
@@ -532,6 +532,10 @@ function exit() {
   window.location.assign("https://css.taxact.com/")
 }
 
+//function statsAlert() {
+//
+//}
+
 var keyboardEvent = document.createEvent("KeyboardEvent");
 var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
 
@@ -580,7 +584,7 @@ var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initK
   <div id="myDropdown2" class="dropdown-content">
     <a onclick="" href="#">System Info</a>
     <hr>
-    <a id="myBtn" href="#" onClick="function(m)" >Statistics</a>
+    <a id="myBtn" href="#" onClick="alert('Games Won: ' + gamesWon \n 'Games Lost: ' + gamesLost \n 'Total Games Played: ' + gamesWon +gamesLost)" >Statistics</a>
     <hr>
 
     <a onclick="alert('This game was created by Ben J(RIP), Travis G, and Reid K')" href="#">About</a>
