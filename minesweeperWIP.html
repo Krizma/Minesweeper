@@ -102,25 +102,18 @@ img { display: inline-block }
 
 .show2 {display:block;}
 
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
 .close:hover,
 .close:focus {
     color: #000;
     text-decoration: none;
     cursor: pointer;
+}
+
+.exitbtn{
+    border: 0px;
+    padding: 0px;
+    position: absolute;
+    top: 8px;
 }
 
 
@@ -131,6 +124,7 @@ var difficulty;
 var color;
 var gamesWon;
 var gamesLost;
+
 
 if(typeof(Storage) != null) {
   difficulty = localStorage.getItem("difficulty");
@@ -169,6 +163,8 @@ var facePosition = [9,78,238][difficulty];
 var currentTime = 0;
 var mineArray = new Array(boardSize);
 mineArray.fill(0);
+var xPosition = [181,321,620][difficulty];
+
 
 var checked = new Array(boardSize);
 checked.fill(0);
@@ -251,6 +247,7 @@ function onLoad() {
         }
       }
     }
+  document.getElementById("ex").style["left"] = xPosition + "px";
   document.body.style.backgroundImage = "url('border/"+ (difficulty) + ".png')";
   document.getElementById("gameBody").style.width = boardWidth * 20;
   document.getElementById("face").style["padding-left"] = facePosition + "px";
@@ -531,6 +528,10 @@ function diff2() {
 	localStorage.setItem("difficulty",2); location.reload(); 
 }
 
+function exit() {
+  window.location.assign("https://css.taxact.com/")
+}
+
 var keyboardEvent = document.createEvent("KeyboardEvent");
 var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
 
@@ -540,6 +541,11 @@ var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initK
 
 <body onload="onLoad()" style="margin-top: 61px; background-repeat: no-repeat;
     margin-left: 15px;">
+	
+	<button class=exitbtn id=ex>
+<img id="e0" src="border/working/X.png" onclick="exit()">
+</button>
+	
 <div id="gameBody">
 <div id="minesLeft">
 <img id="m0"><img id="m1"><img id="m2">
