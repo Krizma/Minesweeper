@@ -8,7 +8,7 @@
 
 
 
-<link rel="shortcut icon" type="image/png" href="https://css.taxact.com/favicon.ico"/>
+<link rel="shortcut icon" type="image/png" href="icon/icon.png"/>
 <style type="text/css">
 img { display: inline-block }
 //div { border: double }
@@ -685,6 +685,9 @@ function showMines(winner) {
     JSON.parse(gamesLost + gamesWon);
     localStorage.setItem("gamesWon",gamesWon);
     localStorage.setItem("gamesLost",gamesLost);
+	localStorage.setItem("gamesCompleted",gamesCompleted);
+	localStorage.setItem("winPercentage",winPercentage);
+	localStorage.setItem("losePercentage",losePercentage);
   }
 }
 
