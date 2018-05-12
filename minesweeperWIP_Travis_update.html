@@ -1,3 +1,4 @@
+
 <!--Travis-->
 <html>
 <head>
@@ -18,14 +19,14 @@ img { display: inline-block }
 #mineButtons {float: center;}
 
 
-/* Dropdown Button */	
-.dropbtn {	
+/* Dropdown Button */ 
+.dropbtn { 
    background-color: #ece9d8;
    color: Black;
    #padding: 1px;
    font-size: 12px;
    border: none;
-   cursor: pointer;	
+   cursor: pointer; 
    position: relative;
    font-family: Segoe UI;
    padding-top: 2.5px;
@@ -45,11 +46,11 @@ img { display: inline-block }
    background-color: white;
    min-width: 100px;
    max-width: 160px;
-   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);	
+   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); 
    z-index: 1;
    left: 1px;
 
-}	
+} 
 .dropdown-content a {
    color: black;
    #padding: 2px 2px;
@@ -63,13 +64,13 @@ img { display: inline-block }
 }
 .show {display:block;}
 
-.dropbtn2 {	
+.dropbtn2 { 
    background-color: #ece9d8;
    color: Black;
    #padding: 1px;
    font-size: 12px;
    border: none;
-   cursor: pointer;	
+   cursor: pointer; 
    position: relative;
    font-family: Segoe UI;
    padding-top: 2.5px;
@@ -91,11 +92,11 @@ img { display: inline-block }
    background-color: white;
    min-width: 100px;
    max-width: 160px;
-   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);	
+   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); 
    z-index: 1;
    left: 1px;
 
-}	
+} 
 .dropdown-content a2 {
    color: black;
    #padding: 2px 2px;
@@ -173,7 +174,7 @@ font-size: "12px";
     outline:0;
     -webkit-box-shadow:0 3px 9px rgba(0,0,0,.5);
     box-shadow:0 3px 9px rgba(0,0,0,.5);
-	font-family: Segoe UI;
+font-family: Segoe UI;
 }
 .modal-backdrop{
     position:fixed;
@@ -198,7 +199,7 @@ font-size: "12px";
 }
 .modal-header .close {
     margin-top:-2px
-    cursor: pointer;	
+    cursor: pointer; 
 }
 .modal-title{
     margin:0;
@@ -253,18 +254,18 @@ font-size: "12px";
     text-shadow:0 1px 0 #fff;
     filter:alpha(opacity=20);
     opacity:.2;
-    cursor: pointer;	
+    cursor: pointer; 
 }
 
 .btnclose {
-	cursor: pointer;
+cursor: pointer;
 }
 
 .btnX {
-	cursor: pointer;
-	float:right;
-	 font-size:21px;
-	 font-weight:700;
+cursor: pointer;
+float:right;
+font-size:21px;
+font-weight:700;
     line-height:1;
     color:#000;
     text-shadow:0 1px 0 #fff;
@@ -281,15 +282,16 @@ var difficulty;
 var color;
 var gamesWon;
 var gamesLost;
-var gamesCompleted
+//var gamesCompleted = +gamesLost + +gamesWon ; 
 var timesReset;
 var highScores;
+var benCounter;
 
 if(typeof(Storage) != null) {
   difficulty = localStorage.getItem("difficulty");
   if(difficulty == null) {
-    difficulty = 2;
-    localStorage.setItem("difficulty",2);
+    difficulty = 1;
+    localStorage.setItem("difficulty",1);
   }
   color = localStorage.getItem("color");
   if(color == null) {
@@ -309,11 +311,16 @@ if(typeof(Storage) != null) {
   timesReset = localStorage.getItem("timesReset");
   if(timesReset == null) {
     timesReset = 0;
-    localStorage.setItem("timesReset",0);
+    localStorage.setItem("timesRefset",0);
+  }
+  benCounter = localStorage.getItem("benCounter");
+  if(benCounter == null) {
+    benCounter = 0;
+    localStorage.setItem("timesRefset",0);
   }
   highScores = JSON.parse(localStorage.getItem("highScores"));
   if(highScores == null) {
-   	highScores = [[999,999,999],[999,999,999],[999,999,999]];
+   highScores = [[999,999,999],[999,999,999],[999,999,999]];
     localStorage.setItem("highScores",JSON.stringify(highScores));
   }
 } else { // no local storage available
@@ -321,9 +328,10 @@ if(typeof(Storage) != null) {
     color = 1;
     gamesWon = 0;
     gamesLost = 0;
-	gamesCompleted=0;
+gamesCompleted=0;
     timesReset = 0;
-    hightScores = [[999,999,999],[999,999,999],[999,999,999]];
+    benCounter = 0;
+    highScores = [[999,999,999],[999,999,999],[999,999,999]];
     
 
 }
@@ -347,6 +355,7 @@ var stopCounting = false;
 var currentCounterID;
 var gameOn = true;
 var gamePause = false;
+var cheater = false;
 
 function neighborsOf(arrayID) {
   output = [];
@@ -381,11 +390,13 @@ function randomizeBoard(mineId) {
 
 function onLoad() {
   window.onblur = function(e){
-    gamePause = true;
-    document.getElementById("f0").src = "face/clock.png";
-    stopCounting = stopCounting? false:true;
-    for(var i=0; i<boardSize; i++)
-      document.getElementById(i).src = "tiles/"+"PAUSED000"[i%9]+".png";
+    if(gameOn){
+      gamePause = true;
+      document.getElementById("f0").src = "face/clock.png";
+      stopCounting = stopCounting? false:true;
+      for(var i=0; i<boardSize; i++)
+        document.getElementById(i).src = "tiles/"+"PAUSED000"[i%9]+".png";
+    }
   };
   window.onkeydown = function(e) {
     switch(e.key) {
@@ -394,7 +405,7 @@ function onLoad() {
       case "3": localStorage.setItem("difficulty",2); location.reload(); break;
       case "r": gamesLost++; localStorage.setItem("gamesLost",gamesLost); location.reload(); break;
       case "c": changeColor(); break;
-      case "b": showMines(true);
+      case "b": ben(); break;
       case "p": 
         if(gameOn){
           gamePause = false;
@@ -451,7 +462,7 @@ function onLoad() {
       newButton.className = "unrevealed";
       document.body.onmousedown = function(e) { if (e.button === 1) return false; }
       newButton.onmousedown = function(e) { 
-       	if(gameOn)
+       if(gameOn)
         if(!stopCounting)
           switch(e.which) {
             case 1: if(e.target.className=="unrevealed" && e.target.flagged == 0) {e.target.src = "tiles/depressed.png"; document.getElementById("f0").src = "face/O.png";} break;
@@ -471,15 +482,15 @@ function onLoad() {
           switch(e.which) {
             case 1: if(e.target.className=="unrevealed") {check(e.target, 0)} else {check(e.target, -1)}; break;
             case 2: 
-	          var neighbors = neighborsOf(parseInt(e.target.id));
-		  neighbors.push(e.target.id);
+          var neighbors = neighborsOf(parseInt(e.target.id));
+  neighbors.push(e.target.id);
                   for(var i=0; i<neighbors.length; i++){
                     var neighbor = document.getElementById(neighbors[i]);
                     if(neighbor.className == "unrevealed" && neighbor.flagged == 0)
-		      neighbor.src = "tiles/blank.png";
-		  }
-		  check(e.target, -1);
-		  break;
+      neighbor.src = "tiles/blank.png";
+  }
+  check(e.target, -1);
+  break;
             case 3:
               if(!checked[e.target.id]) {
                 e.target.src = e.target.flagged ? "tiles/blank.png" : "tiles/flag.png";
@@ -490,8 +501,8 @@ function onLoad() {
            }
       }
       newButton.onmouseleave = function(e) {
-	   // if(!stopCounting)
-	      if(e.which == 2){
+   // if(!stopCounting)
+      if(e.which == 2){
             var neighbors = neighborsOf(parseInt(e.target.id)); neighbors.push(e.target.id);
             document.getElementById("f0").src = "face/smile.png";
             for(var i=0; i<neighbors.length; i++){
@@ -502,8 +513,8 @@ function onLoad() {
           }
       }
       newButton.onmouseenter = function(e) {
-	    //if(!stopCounting)
-		  if(e.which == 2){
+    //if(!stopCounting)
+  if(e.which == 2){
           var neighbors = neighborsOf(parseInt(e.target.id)); neighbors.push(e.target.id);
           document.getElementById("f0").src = "face/O.png";
           for(var i=0; i<neighbors.length; i++){
@@ -534,7 +545,7 @@ function check(mineButton, depth) {
 
   if(mineButton.flagged) return; //flagged mine protection
 
-  if(firstClick && depth==0) {
+  if(firstClick && depth==0 && !gamePause) {
     console.log("First click!");
     randomizeBoard(mineId);
     updateTimer();
@@ -556,10 +567,12 @@ function check(mineButton, depth) {
     return;
   checked[mineId]++;
   if(mineArray[mineId]) {
-    if(depth == 0) {
-    showMines(false);
-    gameOn = false;
-    mineButton.src = "tiles/triggered.png";
+    if(!cheater){
+      if(depth == 0) {
+      showMines(false);
+      gameOn = false;
+      mineButton.src = "tiles/triggered.png";
+    }
   }
     return;
   } else if(!mineArray[mineId]){
@@ -575,32 +588,54 @@ function check(mineButton, depth) {
   }
 }
 
+function ben(){
+  if(gameOn){
+  cheater = true;
+  showMines(true);
+    for(var i=0; i<boardSize; i++) {
+      var boardSpaces = document.getElementById(i);
+      if(!mineArray[i]) boardSpaces.src = "tiles/"+sumMines(i)+".png";
+    }
+   showMines(true);
+   benCounter++;
+   localStorage.setItem("benCounter", benCounter);
+   console.log("Ben has been special summoned to complete the game.");
+   if(benCounter == 1) console.log("Ben has been summoned 1 time.");
+   else console.log("Ben has been summoned " + benCounter + " times.");
+  }
+}
 
 function showMines(winner) {
   for(var i=0; i<boardSize; i++) {
     var mineButton = document.getElementById(i);
     if(mineArray[i]) {
-	  if(winner) {
+  if(winner) {
         mineButton.src = "tiles/flag.png";
-	  } else mineButton.src = mineButton.flagged ? "tiles/flag.png" : "tiles/bomb.png";
-	} else if(!winner && mineButton.flagged) mineButton.src = "tiles/miss.png";
+        document.getElementById("f0").src = "face/win.png"
+  } else {
+  document.getElementById("f0").src = "face/lose.png"
+  mineButton.src = mineButton.flagged ? "tiles/flag.png" : "tiles/bomb.png";
+ }
+} else if(!winner && mineButton.flagged) {
+    mineButton.src = "tiles/miss.png";
+    document.getElementById("f0").src = "face/lose.png"
+    }
   }
   clearTimeout(currentCounterID);
   numFlags = winner?numMines:numFlags;
   updateMinesLeft();
   stopCounting = true;
   parseInt(currentTime);
-  highScores[difficulty] = updateHighScore(highScores[difficulty], currentTime);
   gameOn = false;
-  winner = winner? gamesWon++ : gamesLost++;
-  console.log('Games Won: '+gamesWon);
-  console.log('Games Lost: '+gamesLost);
-  gamesCompleted = parseInt(gamesWon) + parseInt(gamesLost);
-  console.log('Games Completed: ' + gamesCompleted)
-JSON.parse(gamesLost + gamesWon);
-  localStorage.setItem("gamesWon",gamesWon);
-  localStorage.setItem("gamesLost",gamesLost);
-  document.getElementById("f0").src = winner?"face/win.png":"face/lose.png";
+  if (!cheater) {
+    highScores[difficulty] = updateHighScore(highScores[difficulty], currentTime);
+    winner = winner? gamesWon++ : gamesLost++;
+    console.log('Games Won: '+gamesWon);
+    console.log('Games Lost: '+gamesLost);
+    JSON.parse(gamesLost + gamesWon);
+    localStorage.setItem("gamesWon",gamesWon);
+    localStorage.setItem("gamesLost",gamesLost);
+  }
 }
 
 function updateMinesLeft() {
@@ -632,6 +667,8 @@ function checkWin() {
     showMines(true); //flag all the mines & stop the clock
 }
 
+
+
 function pause(){
   console.log(gameOn);
   if(!gameOn) location.reload();
@@ -640,21 +677,23 @@ function pause(){
     gamesLost++;
     localStorage.setItem("gamesLost",gamesLost);
   } else {
-      gamePause = false;
-      document.getElementById("f0").src = "face/smile.png";
-      stopCounting = stopCounting? false:true;
-      if(!stopCounting){
-        clearTimeout(currentCounterID)
-        updateTimer();
-        for(var i=0; i<boardSize; i++){
-          var mineButton = document.getElementById(i);
-          if(mineButton.className == "unrevealed"){
-            if(mineButton.flagged){
-              mineButton.src = "tiles/flag.png";
-            } else mineButton.src = "tiles/blank.png";
-          } else mineButton.src = "tiles/"+mineButton.className+".png";
+      if(!firstClick){
+        gamePause = false;
+        document.getElementById("f0").src = "face/smile.png";
+        stopCounting = stopCounting? false:true;
+        if(!stopCounting){
+          clearTimeout(currentCounterID)
+          updateTimer();
+          for(var i=0; i<boardSize; i++){
+            var mineButton = document.getElementById(i);
+            if(mineButton.className == "unrevealed"){
+              if(mineButton.flagged){
+                mineButton.src = "tiles/flag.png";
+              } else mineButton.src = "tiles/blank.png";
+            } else mineButton.src = "tiles/"+mineButton.className+".png";
+          }
         }
-      }
+      } else location.reload();
     }
 }
 
@@ -720,7 +759,7 @@ function resetScore() {
 }
 
 function updateHighScore(currentScores,newScore) {
-  console.log(typeof(currentScores) + ": " + currentScores);
+  console.log(currentScores);
   currentScores.push(newScore);
   currentScores.sort();
   currentScores.pop();
@@ -792,10 +831,10 @@ var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initK
       <div class="modal-content">
         <div class="modal-header">
           <a type="button" class="btnX" data-dismiss="modal">&times;</a>
-          <h4 class="modal-title">Statistics</h4>
+          <h4 class="modal-title">Modal Header</h4>
         </div>
         <div class="modal-body">
-          <p class>Some text in the modal.</p>
+          <p>Some text in the modal.</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btnclose" data-dismiss="modal">Close</button>
@@ -815,3 +854,24 @@ var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initK
 </footer>
 
 </html>
+
+
+<!--
+1 Ben ill kil you 
+10 Ben is disipointed 
+20 Ben is sad
+40 Ben is Happy, you suck at this game
+50 Ben has been summoned to complete the game but was not good enough Jonah has now been
+summoned to conquer all.
+60 Ben will now end this travesty of a game you have failed to complete in a suitable time
+70 Jen Bensen has ben summoned to defeat the Ben Jensen
+80 Ben has slayed this game beacuse you could not
+90 Ben has become enraged
+100 Ben is out of control
+110 Ben has swept through and cleared all that you could not 
+120 Ben you say, the force you must use
+130 An error has occured, Ben has been summoned to fix   
+140 You win 
+-->
+
+
