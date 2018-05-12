@@ -259,6 +259,44 @@ font-family: Segoe UI;
 
 .btnclose {
 cursor: pointer;
+-moz-box-shadow:inset 0px 1px 0px 0px #f5978e;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #f5978e;
+	box-shadow:inset 0px 1px 0px 0px #f5978e;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f24537), color-stop(1, #c62d1f));
+	background:-moz-linear-gradient(top, #f24537 5%, #c62d1f 100%);
+	background:-webkit-linear-gradient(top, #f24537 5%, #c62d1f 100%);
+	background:-o-linear-gradient(top, #f24537 5%, #c62d1f 100%);
+	background:-ms-linear-gradient(top, #f24537 5%, #c62d1f 100%);
+	background:linear-gradient(to bottom, #f24537 5%, #c62d1f 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f24537', endColorstr='#c62d1f',GradientType=0);
+	background-color:#f24537;
+	-moz-border-radius:2px;
+	-webkit-border-radius:2px;
+	border-radius:2px;
+	border:1px solid #d02718;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Segoe UI;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #810e05;
+}
+.btnclose:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #c62d1f), color-stop(1, #f24537));
+	background:-moz-linear-gradient(top, #c62d1f 5%, #f24537 100%);
+	background:-webkit-linear-gradient(top, #c62d1f 5%, #f24537 100%);
+	background:-o-linear-gradient(top, #c62d1f 5%, #f24537 100%);
+	background:-ms-linear-gradient(top, #c62d1f 5%, #f24537 100%);
+	background:linear-gradient(to bottom, #c62d1f 5%, #f24537 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#c62d1f', endColorstr='#f24537',GradientType=0);
+	background-color:#c62d1f;
+}
+.btnclose:active {
+position:relative;
+	top:1px;
 }
 
 .btnX {
@@ -286,6 +324,7 @@ var gamesLost;
 var timesReset;
 var highScores;
 var benCounter;
+var boolReset;
 
 if(typeof(Storage) != null) {
   difficulty = localStorage.getItem("difficulty");
@@ -357,6 +396,7 @@ var gameOn = true;
 var gamePause = false;
 var cheater = false;
 
+
 function neighborsOf(arrayID) {
   output = [];
   //row above, left to right
@@ -398,6 +438,7 @@ function onLoad() {
         document.getElementById(i).src = "tiles/"+"PAUSED000"[i%9]+".png";
     }
   };
+
   window.onkeydown = function(e) {
     switch(e.key) {
       case "1": localStorage.setItem("difficulty",0); location.reload(); break;
@@ -760,11 +801,15 @@ function diff2() {
 }
 
 function resetScore() {
-  localStorage.clear("gamesLost");
+ if (confirm('Are you sure you would like to reset your stats?')) {
+ localStorage.clear("gamesLost");
   localStorage.clear("gamesWon");
   timesReset++;
   localStorage.setItem("timesReset",timesReset);
   location.reload();
+  } else {
+  //do nothing
+ }
 }
 
 function updateHighScore(currentScores,newScore) {
@@ -823,7 +868,6 @@ var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initK
     <a onclick="" href="#">System Info</a>
     <hr>
     <a class=modalstyle data-toggle="modal" data-target="#myModal">Statistics </a>
-    <a onclick="resetScore()" href="#">Reset Statistics</a>
     <hr>
     <a onclick="alert('This game was created by Ben J(RIP), Travis G, and Reid K')" href="#">About</a>
     
@@ -848,7 +892,7 @@ var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initK
 		  <p id=gamesCompleted>Games Completed: </p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btnclose" data-dismiss="modal">Close</button>
+          <button onclick="resetScore()" type="button" class="btnclose" data-dismiss="modal">Reset Stats</button>
         </div>
       </div>
       
