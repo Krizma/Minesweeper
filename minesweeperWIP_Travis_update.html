@@ -632,6 +632,15 @@ function showMines(winner) {
     winner = winner? gamesWon++ : gamesLost++;
     console.log('Games Won: '+gamesWon);
     console.log('Games Lost: '+gamesLost);
+	gamesCompleted = parseInt(gamesWon) + parseInt(gamesLost);
+    console.log('Games Completed: ' + gamesCompleted);
+	winPercentage = (parseInt(gamesWon)/parseInt(gamesCompleted))*100;
+	console.log(winPercentage)
+	losePercentage = (parseInt(gamesLost)/parseInt(gamesCompleted))*100;
+	console.log(losePercentage+"%")
+	document.getElementById("gamesWon").innerHTML = "Games Won: "+gamesWon+' ('+winPercentage+'%)';
+	document.getElementById("gamesLost").innerHTML = "Games Lost: "+gamesLost+' ('+losePercentage+'%)';
+	document.getElementById("gamesCompleted").innerHTML = "Games Completed: "+gamesCompleted;
     JSON.parse(gamesLost + gamesWon);
     localStorage.setItem("gamesWon",gamesWon);
     localStorage.setItem("gamesLost",gamesLost);
@@ -831,10 +840,12 @@ var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initK
       <div class="modal-content">
         <div class="modal-header">
           <a type="button" class="btnX" data-dismiss="modal">&times;</a>
-          <h4 class="modal-title">Modal Header</h4>
+          <h4 class="modal-title">Stats</h4>
         </div>
         <div class="modal-body">
-          <p>Some text in the modal.</p>
+          <p id=gamesWon>Games Won: </p>
+		  <p id=gamesLost>Games Lost: </p>
+		  <p id=gamesCompleted>Games Completed: </p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btnclose" data-dismiss="modal">Close</button>
